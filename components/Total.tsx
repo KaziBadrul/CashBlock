@@ -66,7 +66,8 @@ const Total = () => {
         {isDay ? <Sun /> : <Moon />} <span>{currentDate}</span>
       </div>
       <div className="flex items-center justify-center w-full p-8 text-5xl font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all hover:animate-wiggle">
-        ৳ {budget.toLocaleString()}
+        {budget.toLocaleString()}
+        <p className="text-lg">৳</p>
       </div>
       <div className="flex items-center justify-center w-full py-2 sm:text-lg md:text-xl gap-5 font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black]">
         <p className={netWorthVisible ? "" : "hidden"}>

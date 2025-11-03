@@ -48,7 +48,7 @@ const ExpenseList = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full h-full p-6 overflow-y-clip bg-chart-5 border-black">
+    <div className="flex flex-col w-full h-full p-6 bg-chart-5 border-black">
       <h2 className="mb-6 text-4xl font-extrabold text-black uppercase border-b-4 border-black text-center">
         Transactions
       </h2>
