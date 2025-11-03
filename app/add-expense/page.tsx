@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import CustomAlert from "@/components/Alert";
 
 export default function AddExpensePage() {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const alertMessage = "Expense added successfully!";
   const router = useRouter();
 
   const expenseCategories = [
@@ -48,10 +51,14 @@ export default function AddExpensePage() {
 
     setLoading(false);
     if (res.ok) {
-      alert("Expense added successfully!");
-      router.push("/");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        router.push("/");
+      }, 2000);
     } else {
-      alert("Error adding expense");
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     }
   };
 
@@ -117,6 +124,7 @@ export default function AddExpensePage() {
           {loading ? "Adding..." : "Add Expense"}
         </button>
       </form>
+      {showAlert && <CustomAlert message={alertMessage} />}
     </div>
   );
 }

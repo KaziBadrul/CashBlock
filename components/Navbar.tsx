@@ -22,7 +22,13 @@ const Navbar = ({ user }: NavbarProps) => {
           width={50}
           height={50}
         />
-        <span>CashBlock</span>
+        {/* <span>CashBlock</span> */}
+        <Image
+          src="/CashBlockName.png"
+          alt="CashBlock"
+          width={200}
+          height={50}
+        />
       </div>
 
       {/* Right Side - User Button */}

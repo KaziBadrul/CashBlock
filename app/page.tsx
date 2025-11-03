@@ -39,7 +39,9 @@ export default async function Home() {
       </div>
 
       {/* RIGHT PANEL */}
-      <ExpenseList />
+      <div className="flex flex-col h-full md:overflow-y-auto bg-chart-5">
+        <ExpenseList />
+      </div>
     </div>
   );
 }

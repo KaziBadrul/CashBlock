@@ -3,12 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import CustomAlert from "@/components/Alert";
 
 export default function AddIncomePage() {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const alertMessage = "Income added successfully!";
   const router = useRouter();
 
   const incomeCategories = [
@@ -37,10 +40,14 @@ export default function AddIncomePage() {
 
     setLoading(false);
     if (res.ok) {
-      alert("Income added successfully!");
-      router.push("/");
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        router.push("/");
+      }, 2000);
     } else {
-      alert("Error adding income");
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
     }
   };
 
@@ -106,6 +113,7 @@ export default function AddIncomePage() {
           {loading ? "Adding..." : "Add Income"}
         </button>
       </form>
+      {showAlert && <CustomAlert message={alertMessage} />}
     </div>
   );
 }
