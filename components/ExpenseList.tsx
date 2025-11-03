@@ -14,6 +14,7 @@ interface Transaction {
 const ExpenseList = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totals, setTotals] = useState({ income: 0, expense: 0 });
+  const currency = localStorage.getItem("currency") || "$";
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -60,7 +61,7 @@ const ExpenseList = () => {
             Income (This Month)
           </span>
           <span className="text-2xl font-extrabold text-lime-700">
-            ৳ {totals.income.toLocaleString()}
+            {currency} {totals.income.toLocaleString()}
           </span>
         </div>
         <div className="flex flex-col items-center">
@@ -68,7 +69,7 @@ const ExpenseList = () => {
             Expense (This Month)
           </span>
           <span className="text-2xl font-extrabold text-red-700">
-            ৳ {totals.expense.toLocaleString()}
+            {currency} {totals.expense.toLocaleString()}
           </span>
         </div>
       </div>
@@ -88,10 +89,11 @@ const ExpenseList = () => {
             >
               <div className="flex justify-between">
                 <h3 className="text-xl">{t.category}</h3>
-                <span className="text-2xl">
-                  {t.type === "income" ? "+" : "-"}৳
+                <div className="text-2xl flex items-baseline justify-center gap-1">
+                  {t.type === "income" ? "+" : "-"}
                   {parseFloat(t.amount).toLocaleString()}
-                </span>
+                  <p className="text-sm">{currency}</p>
+                </div>
               </div>
               {t.description && (
                 <p className="text-sm font-normal italic">{t.description}</p>

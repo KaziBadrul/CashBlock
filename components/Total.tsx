@@ -8,6 +8,7 @@ const Total = () => {
   const [budget, setBudget] = useState<number | null>(null);
   const [netWorth, setNetWorth] = useState<number>(0);
   const [netWorthVisible, setNetWorthVisible] = useState<boolean>(true);
+  const currency = localStorage.getItem("currency") || "$";
 
   const today = new Date();
   const hour = today.getHours();
@@ -67,11 +68,11 @@ const Total = () => {
       </div>
       <div className="flex items-center justify-center w-full p-8 text-5xl font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all hover:animate-wiggle">
         {budget.toLocaleString()}
-        <p className="text-lg">৳</p>
+        <p className="text-lg">{currency}</p>
       </div>
       <div className="flex items-center justify-center w-full py-2 sm:text-lg md:text-xl gap-5 font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black]">
         <p className={netWorthVisible ? "" : "hidden"}>
-          Networth: ৳ {netWorth.toLocaleString()}
+          Networth: {currency} {netWorth.toLocaleString()}
         </p>
         <EyeClosed
           className={netWorthVisible ? "hidden" : "ml-2 w-6 h-6"}
