@@ -13,6 +13,7 @@ interface Transaction {
 
 const ExpenseList = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [totals, setTotals] = useState({ income: 0, expense: 0 });
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -20,6 +21,27 @@ const ExpenseList = () => {
       const data = await res.json();
       if (data.transactions) {
         setTransactions(data.transactions);
+
+        // Calculate totals for current month
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        let income = 0;
+        let expense = 0;
+
+        data.transactions.forEach((t: Transaction) => {
+          const date = new Date(t.occurredAt);
+          if (
+            date.getMonth() === currentMonth &&
+            date.getFullYear() === currentYear
+          ) {
+            if (t.type === "income") income += parseFloat(t.amount);
+            else expense += parseFloat(t.amount);
+          }
+        });
+
+        setTotals({ income, expense });
       }
     };
     fetchTransactions();
@@ -30,6 +52,26 @@ const ExpenseList = () => {
       <h2 className="mb-6 text-4xl font-extrabold text-black uppercase border-b-4 border-black text-center">
         Transactions
       </h2>
+
+      {/* Total Income & Expense */}
+      <div className="flex justify-around mb-6 p-4 border-4 border-black bg-white shadow-[4px_4px_0px_0px_black]">
+        <div className="flex flex-col items-center">
+          <span className="text-lg font-bold uppercase">
+            Income (This Month)
+          </span>
+          <span className="text-2xl font-extrabold text-lime-700">
+            ৳ {totals.income.toLocaleString()}
+          </span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="text-lg font-bold uppercase">
+            Expense (This Month)
+          </span>
+          <span className="text-2xl font-extrabold text-red-700">
+            ৳ {totals.expense.toLocaleString()}
+          </span>
+        </div>
+      </div>
 
       {transactions.length === 0 ? (
         <p className="text-xl font-semibold text-black text-center uppercase">
