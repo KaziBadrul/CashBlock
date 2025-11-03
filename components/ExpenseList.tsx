@@ -45,8 +45,8 @@ const ExpenseList = () => {
               }`}
             >
               <div className="flex justify-between">
-                <h3>{t.category}</h3>
-                <span>
+                <h3 className="text-xl">{t.category}</h3>
+                <span className="text-2xl">
                   {t.type === "income" ? "+" : "-"}৳
                   {parseFloat(t.amount).toLocaleString()}
                 </span>

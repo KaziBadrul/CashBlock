@@ -11,6 +11,26 @@ export default function AddExpensePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const expenseCategories = [
+    "Groceries",
+    "Transportation",
+    "Housing",
+    "Utilities",
+    "Healthcare",
+    "Education",
+    "Entertainment",
+    "Restaurants",
+    "Shopping",
+    "Travel",
+    "Debt",
+    "Savings",
+    "Insurance",
+    "Subscriptions",
+    "Personal Care",
+    "Gifts",
+    "Unexpected",
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -56,13 +76,21 @@ export default function AddExpensePage() {
           Add Expense
         </h1>
 
-        <input
+        <select
           className="p-3 border-4 border-black bg-red-100 text-lg font-semibold focus:outline-none focus:bg-red-50"
-          placeholder="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+          {expenseCategories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
 
         <input
           className="p-3 border-4 border-black bg-red-100 text-lg font-semibold focus:outline-none focus:bg-red-50"

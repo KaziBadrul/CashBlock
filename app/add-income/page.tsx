@@ -11,6 +11,15 @@ export default function AddIncomePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const incomeCategories = [
+    "Salary",
+    "Business",
+    "Investments",
+    "Gifts",
+    "Rental Income",
+    "Other Income",
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -36,7 +45,7 @@ export default function AddIncomePage() {
   };
 
   return (
-    <div className="z-50 flex flex-col items-center justify-center min-h-screen bg-[#7CFC00] border-8 border-black font-mono relative">
+    <div className="z-50 flex flex-col items-center justify-center min-h-screen bg-chart-5 border-8 border-black font-mono relative">
       {/* Header with back button */}
       <div className="absolute top-6 left-6">
         <button
@@ -56,13 +65,21 @@ export default function AddIncomePage() {
           Add Income
         </h1>
 
-        <input
+        <select
           className="p-3 border-4 border-black text-lg font-semibold bg-yellow-200 focus:outline-none focus:bg-yellow-100"
-          placeholder="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>
+            Select Category
+          </option>
+          {incomeCategories.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
 
         <input
           className="p-3 border-4 border-black text-lg font-semibold bg-yellow-200 focus:outline-none focus:bg-yellow-100"
