@@ -1,0 +1,73 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // for local dev; switch to postgresql for production
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  clerkId   String   @unique
+  email     String?
+  fullName  String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  monthlyBudgets MonthlyBudget[]
+  transactions   Transaction[]
+  netWorths      NetWorthHistory[]
+}
+
+model MonthlyBudget {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  monthYear    String // e.g. "2025-10"
+  setBudget    Decimal? @default(0) // The budget set by the user
+  totalIncome  Decimal  @default(0)
+  totalExpense Decimal  @default(0)
+  createdAt    DateTime @default(now())
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[] // <-- back-relation
+
+  @@unique([userId, monthYear])
+  @@index([userId])
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  userId      String
+  budgetId    Int?
+  category    String
+  type        TransactionType
+  amount      Decimal
+  description String?
+  occurredAt  DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+
+  user   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  budget MonthlyBudget? @relation(fields: [budgetId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([occurredAt])
+}
+
+model NetWorthHistory {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  total      Decimal
+  recordedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum TransactionType {
+  income
+  expense
+}
