@@ -22,10 +22,6 @@ const Total = () => {
   };
   const currentDate = String(today.toLocaleDateString(undefined, options));
 
-  const handleNetWorthVisibility = () => {
-    setNetWorthVisible(!netWorthVisible);
-  };
-
   useEffect(() => {
     const fetchBudget = async () => {
       const res = await fetch("/api/transactions/budget");
@@ -39,16 +35,25 @@ const Total = () => {
     fetchBudget();
 
     const fetchNetWorth = async () => {
-      console.log("Fetching net worth...");
       const res = await fetch("/api/transactions/networth");
       const data = await res.json();
-      console.log("Net worth data:", data.data.netWorth);
       if (data.data.netWorth) {
         setNetWorth(data.data.netWorth);
       }
     };
     fetchNetWorth();
+
+    const storedVisibility = localStorage.getItem("netWorthVisible");
+    if (storedVisibility !== null) {
+      setNetWorthVisible(storedVisibility === "true");
+    }
   }, []);
+
+  const handleNetWorthVisibility = () => {
+    const newValue = !netWorthVisible;
+    setNetWorthVisible(newValue);
+    localStorage.setItem("netWorthVisible", String(newValue));
+  };
 
   if (budget === null)
     return (

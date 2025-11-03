@@ -2,6 +2,7 @@
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Settings() {
   const [currency, setCurrency] = useState(() => {
@@ -14,6 +15,11 @@ export default function Settings() {
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrency(e.target.value);
     localStorage.setItem("currency", e.target.value);
+  };
+
+  const handleCurrencyButtonClick = (symbol: string) => {
+    setCurrency(symbol);
+    localStorage.setItem("currency", symbol);
   };
 
   const router = useRouter();
@@ -43,6 +49,32 @@ export default function Settings() {
           onChange={(e) => handleCurrencyChange(e)}
           required
         />
+        <div className="grid grid-cols-4 w-full gap-2">
+          <Button
+            className="col-span-1 p-5 text-xl font-bold uppercase bg-yellow-200 text-black border-4 border-black hover:bg-yellow-500 hover:text-black hover:scale-105 transition-all shadow-[2px_2px_0px_0px_black]"
+            onClick={() => handleCurrencyButtonClick("$")}
+          >
+            $
+          </Button>
+          <Button
+            className="col-span-1 p-5 text-xl font-bold uppercase bg-yellow-200 text-black border-4 border-black hover:bg-yellow-500 hover:text-black hover:scale-105 transition-all shadow-[2px_2px_0px_0px_black]"
+            onClick={() => handleCurrencyButtonClick("€")}
+          >
+            €
+          </Button>
+          <Button
+            className="col-span-1 p-5 text-xl font-bold uppercase bg-yellow-200 text-black border-4 border-black hover:bg-yellow-500 hover:text-black hover:scale-105 transition-all shadow-[2px_2px_0px_0px_black]"
+            onClick={() => handleCurrencyButtonClick("£")}
+          >
+            £
+          </Button>
+          <Button
+            className="col-span-1 p-5 text-xl font-bold uppercase bg-yellow-200 text-black border-4 border-black hover:bg-yellow-500 hover:text-black hover:scale-105 transition-all shadow-[2px_2px_0px_0px_black]"
+            onClick={() => handleCurrencyButtonClick("¥")}
+          >
+            ¥
+          </Button>
+        </div>
       </div>
     </div>
   );
