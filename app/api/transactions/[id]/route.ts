@@ -3,17 +3,22 @@ import { currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prismadb";
 
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: { id: string } } | { params: Promise<{ id: string }> } //  dev/build
 ) {
+  // unwrap params safely
+  const params =
+    "then" in context.params ? await context.params : context.params;
+  const id = Number(params.id);
+
+  if (isNaN(id)) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
+
   try {
     const clerkUser = await currentUser();
     if (!clerkUser)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    const id = Number(params.id);
-    if (isNaN(id))
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
     const user = await prisma.user.findUnique({
       where: { clerkId: clerkUser.id },
@@ -21,9 +26,7 @@ export async function DELETE(
     if (!user)
       return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-    const transaction = await prisma.transaction.findUnique({
-      where: { id },
-    });
+    const transaction = await prisma.transaction.findUnique({ where: { id } });
     if (!transaction)
       return NextResponse.json(
         { error: "Transaction not found" },
@@ -52,8 +55,8 @@ export async function DELETE(
     await prisma.transaction.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Error deleting transaction:", error);
+  } catch (err) {
+    console.error("Error deleting transaction:", err);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

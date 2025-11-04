@@ -130,6 +130,7 @@ const ExpenseList = () => {
                     : ""
                 }`}
               >
+                =
                 <div className="flex justify-between">
                   <div className="flex items-center gap-4">
                     <div
