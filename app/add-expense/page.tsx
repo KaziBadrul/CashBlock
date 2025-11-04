@@ -30,7 +30,7 @@ export default function AddExpensePage() {
     "Insurance",
     "Subscriptions",
     "Personal Care",
-    "Gifts",
+    "Gift",
     "Unexpected",
   ];
 

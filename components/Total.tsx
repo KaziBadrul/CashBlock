@@ -71,7 +71,10 @@ const Total = () => {
       >
         {isDay ? <Sun /> : <Moon />} <span>{currentDate}</span>
       </div>
-      <div className="flex gap-2 items-baseline justify-center w-full p-8 text-5xl font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all hover:animate-wiggle">
+      <div
+        className={`${budget < 0 ? "bg-red-400" : "bg-chart-4"}
+              flex gap-2 items-baseline justify-center w-full p-8 text-5xl font-extrabold border-4 border-black md:mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all hover:animate-wiggle`}
+      >
         {budget.toLocaleString()}
         <p className="text-lg">{currency}</p>
       </div>
