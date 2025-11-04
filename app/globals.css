@@ -5,6 +5,26 @@
 
 @theme {
   --animate-wiggle: wiggle 1s ease-in-out infinite;
+  --animate-quickwiggle: quickwiggle 0.3s ease-in-out;
+
+  @keyframes quickwiggle {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(5deg);
+    }
+    50% {
+      transform: rotate(-5deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
   @keyframes wiggle {
     0%,
     100% {
@@ -13,14 +33,9 @@
     }
     25% {
       transform: rotate(3deg);
-      /* scale: 1.02; */
-    }
-    50% {
-      /* scale: 1.02; */
     }
     75% {
       transform: rotate(-3deg);
-      /* scale: 1.02; */
     }
   }
 }

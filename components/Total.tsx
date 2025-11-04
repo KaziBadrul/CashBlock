@@ -83,11 +83,19 @@ const Total = () => {
           Networth: {currency} {netWorth.toLocaleString()}
         </p>
         <EyeClosed
-          className={netWorthVisible ? "hidden" : "ml-2 w-6 h-6"}
+          className={
+            netWorthVisible
+              ? "hidden"
+              : "ml-2 w-6 h-6 hover:animate-quickwiggle"
+          }
           onClick={handleNetWorthVisibility}
         />
         <EyeOff
-          className={netWorthVisible ? "ml-2 w-6 h-6" : "hidden"}
+          className={
+            netWorthVisible
+              ? "ml-2 w-6 h-6 hover:animate-quickwiggle"
+              : "hidden"
+          }
           onClick={handleNetWorthVisibility}
         />
       </div>

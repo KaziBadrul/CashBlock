@@ -21,11 +21,33 @@ const ExpenseList = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totals, setTotals] = useState({ income: 0, expense: 0 });
   const currency = localStorage.getItem("currency") || "$";
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
-  const handleDelete = (id: number) => {
-    const updatedTransactions = transactions.filter((t) => t.id !== id);
-    setTransactions(updatedTransactions);
-    console.log("Deleted transaction with id:", id);
+  const handleCardTap = (id: number) => {
+    setActiveCard((prev) => (prev === id ? null : id));
+  };
+
+  const handleDelete = async (id: number) => {
+    setTotals((prev) => {
+      const transaction = transactions.find((t) => t.id === id);
+      if (!transaction) return prev;
+      const amount = parseFloat(transaction.amount);
+      if (transaction.type === "income") {
+        return { ...prev, income: prev.income - amount };
+      } else {
+        return { ...prev, expense: prev.expense - amount };
+      }
+    });
+
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
+    const res = await fetch(`/api/transactions/${id}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+    } else {
+      console.error("Failed to delete transaction");
+    }
   };
 
   useEffect(() => {
@@ -94,72 +116,81 @@ const ExpenseList = () => {
         </p>
       ) : (
         <div className="flex flex-col gap-3">
-          {transactions.map((t) => (
-            <div
-              key={t.id}
-              className={`group p-4 border-4 border-black text-black font-bold rounded-none hover:scale-102 hover:shadow-[4px_4px_0px_0px_black] transition-all ${
-                t.type === "income" ? "bg-lime-300" : "bg-red-300"
-              }`}
-              onTouchEnd={() => console.log("Held")}
-            >
-              <div className="flex justify-between">
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`${
-                      t.type == "income" ? "bg-chart-5" : "bg-chart-4"
-                    } rounded-full p-2 shadow-[2px_2px_0px_0px_black] border-black border-3 group-hover:scale-105 transition-all`}
-                  >
-                    <Image
-                      src={`/categories/${t.category
-                        .toLocaleLowerCase()
-                        .replace(/\s+/g, "-")}.png`}
-                      alt={`${t.category} icon`}
-                      width={35}
-                      height={35}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex gap-1 items-center">
-                      <Trash2
-                        className="w-0 text-red-800 group-hover:w-5 group-active:w-5 transition-all"
-                        onClick={() => handleDelete(t.id)}
+          {transactions.map((t) => {
+            const isActive = activeCard === t.id;
+            return (
+              <div
+                key={t.id}
+                onClick={() => handleCardTap(t.id)}
+                className={`group p-4 select-none border-4 border-black text-black font-bold rounded-none hover:scale-102 hover:shadow-[4px_4px_0px_0px_black] transition-all ${
+                  t.type === "income" ? "bg-lime-300" : "bg-red-300"
+                }  ${
+                  isActive
+                    ? "scale-105 shadow-[4px_4px_0px_0px] shadow-gray-700"
+                    : ""
+                }`}
+              >
+                <div className="flex justify-between">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`${
+                        t.type == "income" ? "bg-chart-5" : "bg-chart-4"
+                      } 
+                      ${isActive ? "scale-105" : ""} 
+                      rounded-full p-2 shadow-[2px_2px_0px_0px_black] border-black border-3 group-hover:scale-105 transition-all
+                      `}
+                    >
+                      <Image
+                        src={`/categories/${t.category
+                          .toLocaleLowerCase()
+                          .replace(/\s+/g, "-")}.png`}
+                        alt={`${t.category} icon`}
+                        width={35}
+                        height={35}
                       />
-                      <h3 className="text-xl group-hover:text-2xl transition-all">
-                        {t.category}
-                      </h3>
                     </div>
-                    {t.description && (
-                      <p className="text-sm font-normal italic">
-                        {t.description}
+                    <div className="flex flex-col">
+                      <div className="flex gap-1 items-center">
+                        <Trash2
+                          className={`text-red-800 group-hover:w-5 hover:animate-quickwiggle hover:bg-red-800 hover:text-white rounded-full transition-all ${
+                            isActive ? "w-5" : "w-0"
+                          }`}
+                          onClick={() => handleDelete(t.id)}
+                        />
+                        <h3
+                          className={`sm:text-xl transition-all ${
+                            isActive ? "sm:text-2xl" : ""
+                          }`}
+                        >
+                          {t.category}
+                        </h3>
+                      </div>
+                      {t.description && (
+                        <p className="text-xs sm:text-sm font-normal italic">
+                          {t.description}
+                        </p>
+                      )}
+                      <p className="text-xs opacity-80">
+                        {new Date(t.occurredAt).toLocaleDateString("en-US", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </p>
-                    )}
-                    <p className="text-xs opacity-80">
-                      {new Date(t.occurredAt).toLocaleDateString("en-US", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
+                    </div>
                   </div>
-                </div>
-                <div className="text-2xl flex items-baseline justify-center gap-1 group-hover:scale-125 transition-all">
-                  {t.type === "income" ? "+" : "-"}
-                  {parseFloat(t.amount).toLocaleString()}
-                  <p className="text-sm">{currency}</p>
+                  <div
+                    className={`sm:text-2xl flex items-baseline justify-center gap-1 group-hover:scale-125 transition-all 
+                      ${isActive ? "sm:scale-125" : ""}`}
+                  >
+                    {t.type === "income" ? "+" : "-"}
+                    {parseFloat(t.amount).toLocaleString()}
+                    <p className="text-sm">{currency}</p>
+                  </div>
                 </div>
               </div>
-              {/* {t.description && (
-                <p className="text-sm font-normal italic">{t.description}</p>
-              )}
-              <p className="text-xs opacity-80">
-                {new Date(t.occurredAt).toLocaleDateString("en-US", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </p> */}
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
