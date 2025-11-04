@@ -1,5 +1,9 @@
 "use client";
 
+// TODO: Add category images/icons
+// TODO: Add a delete button for each transaction
+// TODO: Refactor to use SWR for data fetching and caching
+
 import { useEffect, useState } from "react";
 
 interface Transaction {
@@ -57,16 +61,18 @@ const ExpenseList = () => {
       {/* Total Income & Expense */}
       <div className="flex justify-around mb-6 p-4 border-4 border-black bg-white shadow-[4px_4px_0px_0px_black]">
         <div className="flex flex-col items-center">
-          <span className="text-lg font-bold uppercase">
-            Income (This Month)
+          <span className="flex gap-1 items-baseline md:text-lg font-bold uppercase">
+            Income{" "}
+            <p className="hidden md:block text-xs lg:text-lg">(This Month)</p>
           </span>
           <span className="text-2xl font-extrabold text-lime-700">
             {currency} {totals.income.toLocaleString()}
           </span>
         </div>
         <div className="flex flex-col items-center">
-          <span className="text-lg font-bold uppercase">
-            Expense (This Month)
+          <span className="flex gap-1 items-baseline md:text-lg font-bold uppercase">
+            Expense{" "}
+            <p className="hidden md:block text-xs lg:text-lg">(This Month)</p>
           </span>
           <span className="text-2xl font-extrabold text-red-700">
             {currency} {totals.expense.toLocaleString()}
