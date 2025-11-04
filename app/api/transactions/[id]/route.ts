@@ -7,65 +7,49 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    // ✅ Unwrap properly even if it's a promise in Turbopack
-    const resolvedParams = await Promise.resolve(params);
-    const numericId = Number(resolvedParams.id);
-
-    if (isNaN(numericId)) {
-      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
-    }
-
     const clerkUser = await currentUser();
-    if (!clerkUser) {
+    if (!clerkUser)
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+
+    const id = Number(params.id);
+    if (isNaN(id))
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
 
     const user = await prisma.user.findUnique({
       where: { clerkId: clerkUser.id },
     });
-
-    if (!user) {
+    if (!user)
       return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
 
     const transaction = await prisma.transaction.findUnique({
-      where: { id: numericId },
+      where: { id },
     });
-
-    if (!transaction) {
+    if (!transaction)
       return NextResponse.json(
         { error: "Transaction not found" },
         { status: 404 }
       );
-    }
 
-    if (transaction.userId !== user.id) {
+    if (transaction.userId !== user.id)
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
 
     const budget = await prisma.monthlyBudget.findUnique({
-      where: { id: transaction.budgetId ?? undefined },
+      where: { id: transaction.budgetId! },
     });
-
-    if (!budget) {
+    if (!budget)
       return NextResponse.json({ error: "Budget not found" }, { status: 404 });
-    }
 
     const amount = Number(transaction.amount) || 0;
 
-    if (transaction.type === "income") {
-      await prisma.monthlyBudget.update({
-        where: { id: budget.id },
-        data: { totalIncome: { decrement: amount } },
-      });
-    } else {
-      await prisma.monthlyBudget.update({
-        where: { id: budget.id },
-        data: { totalExpense: { decrement: amount } },
-      });
-    }
+    await prisma.monthlyBudget.update({
+      where: { id: budget.id },
+      data:
+        transaction.type === "income"
+          ? { totalIncome: { decrement: amount } }
+          : { totalExpense: { decrement: amount } },
+    });
 
-    await prisma.transaction.delete({ where: { id: numericId } });
+    await prisma.transaction.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
   } catch (error) {
