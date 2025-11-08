@@ -55,26 +55,52 @@ It emphasizes clarity, speed, and efficiency, allowing you to see your cash flow
 
 ## Getting Started
 
-1. Clone the repository:
-git clone https://github.com/yourusername/cashblock.git
-cd cashblock
-2. Install dependencies:
-npm install
 
-3. Create a .env.local file with the required environment variables (Clerk API keys, Database URL, etc.):
-env
+### 1. Clone the Repository
+```bash
+[git clone https://github.com/KaziBadrul/cashblock.git](https://github.com/KaziBadrul/CashBlock.git)
+cd cashblock
+```
+
+---
+
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+---
+
+### 3. Configure Environment Variables  
+Create a `.env.local` file in the root directory and add the following:
+
+```bash
 DATABASE_URL=postgresql://user:password@localhost:5432/cashblock
 CLERK_FRONTEND_API=your_frontend_api
 CLERK_API_KEY=your_api_key
+```
 
-4. Run database migrations:
+---
+
+### 4. Run Database Migrations
+```bash
 npx prisma migrate dev
+```
 
-5. Start the development server:
+---
+
+### 5. Start the Development Server
+```bash
 npm run dev
+```
 
-Your app should now be running at http://localhost:3000
+---
 
+### 🧱 Done!
+Your app should now be running at:  
+👉 **[http://localhost:3000](http://localhost:3000)**
+
+---
 ---
 
 ## Usage
