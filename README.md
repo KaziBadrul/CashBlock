@@ -1,5 +1,5 @@
 # CashBlock
-# Link: cash-block.vercel.app
+## [Check the website](cash-block.vercel.app)
 
 **Manage your cash. Monthly.**
 
@@ -34,6 +34,11 @@ It emphasizes clarity, speed, and efficiency, allowing you to see your cash flow
 - Brutalist UI for maximum clarity
 - Offline-ready Progressive Web App (PWA) support
 - User authentication with Clerk
+
+![alt text](snapshots/snip1.PNG)
+![alt text](snapshots/snip2.PNG)
+![alt text](snapshots/snip3.PNG)
+![alt text](snapshots/snip4.PNG)
 
 ---
 
