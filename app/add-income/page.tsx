@@ -44,7 +44,7 @@ export default function AddIncomePage() {
       setTimeout(() => {
         setShowAlert(false);
         router.push("/");
-      }, 2000);
+      }, 500);
     } else {
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 3000);

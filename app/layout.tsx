@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import { ensureUserRow } from "@/lib/user";
 
 import { SignedIn } from "@clerk/nextjs";
+import { neobrutalism } from "@clerk/themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,27 @@ export default async function RootLayout({
 }>) {
   const user = await ensureUserRow();
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        theme: neobrutalism,
+      }}
+      localization={{
+        signIn: {
+          start: {
+            title: "Login to CashBlock",
+            subtitle: "Manage your cash, monthly.",
+            actionText: "Don't have an account?",
+          },
+        },
+        signUp: {
+          start: {
+            title: "Join CashBlock",
+            subtitle: "Manage your cash, monthly.",
+            actionText: "Already have an account?",
+          },
+        },
+      }}
+    >
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-black`}

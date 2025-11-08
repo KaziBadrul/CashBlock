@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
+// TODO: Set monthly expenses
+
 const SetBudget = () => {
   const [budget, setBudget] = useState<number | null>(null);
   const [inputValue, setInputValue] = useState("");

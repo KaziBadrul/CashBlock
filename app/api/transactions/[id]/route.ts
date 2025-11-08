@@ -4,9 +4,8 @@ import { prisma } from "@/lib/prismadb";
 
 export async function DELETE(
   req: Request,
-  context: { params: { id: string } } | { params: Promise<{ id: string }> } //  dev/build
+  context: { params: { id: string } } | { params: Promise<{ id: string }> } //  build/dev
 ) {
-  // unwrap params safely
   const params =
     "then" in context.params ? await context.params : context.params;
   const id = Number(params.id);
