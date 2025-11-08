@@ -1,5 +1,5 @@
 # CashBlock
-## [Check the website](cash-block.vercel.app)
+## [Check the website](https://cash-block.vercel.app)
 
 **Manage your cash. Monthly.**
 
