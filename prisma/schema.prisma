@@ -29,6 +29,7 @@ model MonthlyBudget {
   setBudget    Decimal? @default(0) // The budget set by the user
   totalIncome  Decimal  @default(0)
   totalExpense Decimal  @default(0)
+  totalSavings Decimal  @default(0)
   createdAt    DateTime @default(now())
 
   user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -70,4 +71,5 @@ model NetWorthHistory {
 enum TransactionType {
   income
   expense
+  savings
 }

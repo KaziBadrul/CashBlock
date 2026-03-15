@@ -48,7 +48,9 @@ export async function DELETE(
       data:
         transaction.type === "income"
           ? { totalIncome: { decrement: amount } }
-          : { totalExpense: { decrement: amount } },
+          : transaction.type === "expense"
+            ? { totalExpense: { decrement: amount } }
+            : { totalSavings: { decrement: amount } },
     });
 
     await prisma.transaction.delete({ where: { id } });

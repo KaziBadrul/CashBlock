@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 const Total = () => {
   const [budget, setBudget] = useState<number | null>(null);
   const [netWorth, setNetWorth] = useState<number>(0);
+  const [totalSavings, setTotalSavings] = useState<number>(0);
   const [netWorthVisible, setNetWorthVisible] = useState<boolean>(true);
   const currency = localStorage.getItem("currency") || "$";
 
@@ -30,6 +31,7 @@ const Total = () => {
         const net =
           Number(data.budget.setBudget) - Number(data.budget.totalExpense);
         setBudget(net);
+        setTotalSavings(Number(data.budget.totalSavings) || 0);
       }
     };
     fetchBudget();
@@ -65,9 +67,8 @@ const Total = () => {
   return (
     <div className="w-3/4 md:w-full lg:w-3/4">
       <div
-        className={`${
-          isDay ? "bg-chart-3 text-black" : "bg-gray-800 text-white"
-        }  py-2 w-full md:w-3/4 lg:w-2/4 flex items-center justify-center gap-2 text-center text-lg font-semibold border-4 border-black mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all`}
+        className={`${isDay ? "bg-chart-3 text-black" : "bg-gray-800 text-white"
+          }  py-2 w-full md:w-3/4 lg:w-2/4 flex items-center justify-center gap-2 text-center text-lg font-semibold border-4 border-black mb-6 shadow-[8px_8px_0px_0px_black] hover:scale-105 transition-all`}
       >
         {isDay ? <Sun /> : <Moon />} <span>{currentDate}</span>
       </div>
@@ -78,9 +79,12 @@ const Total = () => {
         {budget.toLocaleString()}
         <p className="text-lg">{currency}</p>
       </div>
-      <div className="flex items-center justify-center w-full py-2 sm:text-lg md:text-xl gap-5 font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black]">
+      <div className="flex flex-col items-center justify-center w-full py-2 sm:text-lg md:text-xl font-extrabold border-4 border-black bg-chart-4 md:mb-6 shadow-[8px_8px_0px_0px_black]">
         <p className={netWorthVisible ? "" : "hidden"}>
           Networth: {currency} {netWorth.toLocaleString()}
+        </p>
+        <p className={netWorthVisible ? "border-t-2 border-black/20 w-1/2 text-center pt-1" : "hidden"}>
+          Saved: {currency} {totalSavings.toLocaleString()}
         </p>
         <EyeClosed
           className={

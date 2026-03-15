@@ -26,6 +26,18 @@ const Tools = () => {
           <span className="hidden sm:block text-xl">SET BUDGET</span>
         </Button>
       </Link>
+      <Link href="/add-savings">
+        <Button className="w-full bg-blue-400 text-black border-4 border-black rounded-none hover:bg-blue-600 hover:text-white hover:scale-105 font-bold py-5 hover:shadow-[4px_4px_0px_0px_black]">
+          <BanknoteArrowUp className="sm:mx-5 scale-200 rotate-180" />{" "}
+          <span className="hidden sm:block text-xl">ADD SAVINGS</span>
+        </Button>
+      </Link>
+      <Link href="/savings">
+        <Button className="w-full bg-blue-300 text-black border-4 border-black rounded-none hover:bg-blue-500 hover:text-white hover:scale-105 font-bold py-5 hover:shadow-[4px_4px_0px_0px_black]">
+          <BanknoteArrowUp className="sm:mx-5 scale-200" />{" "}
+          <span className="hidden sm:block text-xl">SAVINGS TAB</span>
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -50,6 +50,7 @@ export async function GET() {
           monthYear,
           totalIncome: 0,
           totalExpense: 0,
+          totalSavings: 0,
         },
       });
     }
@@ -110,6 +111,7 @@ export async function POST(req: Request) {
         setBudget,
         totalIncome: 0,
         totalExpense: 0,
+        totalSavings: 0,
       },
     });
 

@@ -109,6 +109,11 @@ export async function POST(req: Request) {
         where: { id: budget.id },
         data: { totalExpense: { increment: amount } },
       });
+    } else if (type === "savings") {
+      await prisma.monthlyBudget.update({
+        where: { id: budget.id },
+        data: { totalSavings: { increment: amount } },
+      });
     }
 
     return NextResponse.json({ success: true, transaction });

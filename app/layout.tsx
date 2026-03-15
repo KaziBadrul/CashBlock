@@ -21,12 +21,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CashBlock",
   description: "Manage Cash, Monthly.",
-  themeColor: "#000000",
   manifest: "/manifest.json",
   icons: {
     icon: "/icons/icon-192x192.png",
     apple: "/icons/icon-192x192.png",
   },
+};
+
+export const viewport = {
+  themeColor: "#000000",
 };
 
 export default async function RootLayout({

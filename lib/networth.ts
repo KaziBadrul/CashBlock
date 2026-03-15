@@ -12,9 +12,15 @@ export async function computeNetWorthForUser(userId: string) {
     _sum: { amount: true },
   });
 
+  const savings = await prisma.transaction.aggregate({
+    where: { userId, type: "savings" },
+    _sum: { amount: true },
+  });
+
   const totalIncome = incomes._sum.amount ? Number(incomes._sum.amount) : 0;
   const totalExpense = expenses._sum.amount ? Number(expenses._sum.amount) : 0;
+  const totalSavings = savings._sum.amount ? Number(savings._sum.amount) : 0;
 
-  const netWorth = totalIncome - totalExpense;
-  return { totalIncome, totalExpense, netWorth };
+  const netWorth = totalIncome - totalExpense - totalSavings;
+  return { totalIncome, totalExpense, totalSavings, netWorth };
 }
