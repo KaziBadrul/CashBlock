@@ -54,7 +54,7 @@ export default function SavingsPage() {
     };
 
     return (
-        <div className="w-full h-screen pt-16 grid md:grid-cols-2 border-8 border-black font-mono bg-black overflow-hidden">
+        <div className="w-full min-h-screen md:h-screen pt-16 grid md:grid-cols-2 border-4 md:border-8 border-black font-mono bg-black overflow-y-auto md:overflow-hidden">
             {/* LEFT PANEL */}
             <div className="flex flex-col items-center justify-center bg-chart-4 md:border-r-8 border-black p-6 relative overflow-y-auto">
                 <div className="absolute top-6 left-6">

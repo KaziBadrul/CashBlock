@@ -53,10 +53,10 @@ const SavingsGoal = ({ totalSavings }: { totalSavings: number }) => {
     const progress = goal ? Math.min((totalSavings / parseFloat(goal.targetAmount)) * 100, 100) : 0;
 
     return (
-        <div className="w-full mt-6 p-6 bg-white border-4 border-black shadow-[8px_8px_0px_0px_black] font-mono">
+        <div className="w-full mt-6 p-4 sm:p-6 bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] sm:shadow-[8px_8px_0px_0px_black] font-mono">
             <div className="flex justify-between items-center mb-4 border-b-2 border-black pb-2">
-                <h3 className="text-xl font-black uppercase flex items-center gap-2">
-                    <Target className="w-6 h-6" /> Savings Goal
+                <h3 className="text-lg sm:text-xl font-black uppercase flex items-center gap-2">
+                    <Target className="w-5 h-5 sm:w-6 sm:h-6" /> Savings Goal
                 </h3>
                 {!isEditing && goal && (
                     <button
@@ -71,7 +71,7 @@ const SavingsGoal = ({ totalSavings }: { totalSavings: number }) => {
             {isEditing || !goal ? (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                     <input
-                        className="p-2 border-2 border-black text-sm font-bold bg-yellow-100 focus:outline-none"
+                        className="p-2 border-2 border-black text-xs sm:text-sm font-bold bg-yellow-100 focus:outline-none"
                         placeholder="Goal Name (e.g. New Bike)"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -79,20 +79,20 @@ const SavingsGoal = ({ totalSavings }: { totalSavings: number }) => {
                     />
                     <div className="flex gap-2">
                         <input
-                            className="flex-1 p-2 border-2 border-black text-sm font-bold bg-yellow-100 focus:outline-none"
+                            className="flex-1 p-2 border-2 border-black text-xs sm:text-sm font-bold bg-yellow-100 focus:outline-none"
                             placeholder="Target Amount"
                             type="number"
                             value={amount}
                             onChange={(e) => setAmount(e.target.value)}
                             required
                         />
-                        <span className="flex items-center font-bold">{currency}</span>
+                        <span className="flex items-center font-bold text-sm">{currency}</span>
                     </div>
                     <div className="flex gap-2">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 bg-black text-white p-2 text-sm font-bold uppercase hover:bg-white hover:text-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_black]"
+                            className="flex-1 bg-black text-white p-2 text-xs sm:text-sm font-bold uppercase hover:bg-white hover:text-black border-2 border-black transition-all shadow-[2px_2px_0px_0px_black]"
                         >
                             {loading ? "Saving..." : goal ? "Update Goal" : "Set Goal"}
                         </button>
@@ -100,7 +100,7 @@ const SavingsGoal = ({ totalSavings }: { totalSavings: number }) => {
                             <button
                                 type="button"
                                 onClick={() => setIsEditing(false)}
-                                className="flex-1 bg-gray-200 p-2 text-sm font-bold uppercase hover:bg-white border-2 border-black transition-all shadow-[2px_2px_0px_0px_black]"
+                                className="flex-1 bg-gray-200 p-2 text-xs sm:text-sm font-bold uppercase hover:bg-white border-2 border-black transition-all shadow-[2px_2px_0px_0px_black]"
                             >
                                 Cancel
                             </button>
@@ -109,9 +109,9 @@ const SavingsGoal = ({ totalSavings }: { totalSavings: number }) => {
                 </form>
             ) : (
                 <div className="flex flex-col gap-4">
-                    <div className="flex justify-between items-baseline">
-                        <span className="text-lg font-bold italic">{goal.name}</span>
-                        <span className="text-sm font-black">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-baseline gap-1">
+                        <span className="text-base sm:text-lg font-bold italic">{goal.name}</span>
+                        <span className="text-xs sm:text-sm font-black whitespace-nowrap">
                             {currency}{totalSavings.toLocaleString()} / {currency}{parseFloat(goal.targetAmount).toLocaleString()}
                         </span>
                     </div>
