@@ -13,9 +13,13 @@ interface Transaction {
     occurredAt: string;
 }
 
-const SavingsList = () => {
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [totalSavings, setTotalSavings] = useState(0);
+interface SavingsListProps {
+    transactions: Transaction[];
+    totalSavings: number;
+    onDelete: (id: number) => Promise<void>;
+}
+
+const SavingsList = ({ transactions, totalSavings, onDelete }: SavingsListProps) => {
     const currency = localStorage.getItem("currency") || "$";
     const [activeCard, setActiveCard] = useState<number | null>(null);
 
@@ -24,33 +28,8 @@ const SavingsList = () => {
     };
 
     const handleDelete = async (id: number) => {
-        const transaction = transactions.find((t) => t.id === id);
-        if (!transaction) return;
-
-        setTotalSavings((prev) => prev - parseFloat(transaction.amount));
-        setTransactions((prev) => prev.filter((t) => t.id !== id));
-
-        const res = await fetch(`/api/transactions/${id}`, {
-            method: "DELETE",
-        });
-
-        if (!res.ok) {
-            console.error("Failed to delete savings transaction");
-            // Optionally refresh data if delete fails
-        }
+        await onDelete(id);
     };
-
-    useEffect(() => {
-        const fetchSavings = async () => {
-            const res = await fetch("/api/transactions/all-savings");
-            const data = await res.json();
-            if (data.transactions) {
-                setTransactions(data.transactions);
-                setTotalSavings(data.totalSavings);
-            }
-        };
-        fetchSavings();
-    }, []);
 
     return (
         <div className="flex flex-col w-full h-full p-6 bg-chart-4 border-black">
@@ -83,8 +62,8 @@ const SavingsList = () => {
                                 key={t.id}
                                 onClick={() => handleCardTap(t.id)}
                                 className={`group p-4 select-none border-4 border-black text-black font-bold rounded-none hover:scale-102 hover:shadow-[4px_4px_0px_0px_black] transition-all bg-blue-200 ${isActive
-                                        ? "scale-105 shadow-[4px_4px_0px_0px] shadow-gray-700"
-                                        : ""
+                                    ? "scale-105 shadow-[4px_4px_0px_0px] shadow-gray-700"
+                                    : ""
                                     }`}
                             >
                                 <div className="flex justify-between">

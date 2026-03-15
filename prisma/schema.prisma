@@ -20,6 +20,18 @@ model User {
   monthlyBudgets MonthlyBudget[]
   transactions   Transaction[]
   netWorths      NetWorthHistory[]
+  savingsGoal    SavingsGoal?
+}
+
+model SavingsGoal {
+  id           Int      @id @default(autoincrement())
+  userId       String   @unique
+  name         String
+  targetAmount Decimal
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model MonthlyBudget {
